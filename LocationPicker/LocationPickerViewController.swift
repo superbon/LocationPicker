@@ -145,13 +145,21 @@ open class LocationPickerViewController: UIViewController {
 	open override func viewDidLoad() {
 		super.viewDidLoad()
 
-        if #available(iOS 13.0, *), let navigationController = navigationController {
-            let appearance = navigationController.navigationBar.standardAppearance
-            appearance.backgroundColor = navigationController.navigationBar.barTintColor
-            navigationItem.standardAppearance = appearance
-            navigationItem.scrollEdgeAppearance = appearance
-        }
+//        if #available(iOS 13.0, *), let navigationController = navigationController {
+//            let appearance = navigationController.navigationBar.standardAppearance
+//            appearance.backgroundColor = navigationController.navigationBar.barTintColor
+//            navigationItem.standardAppearance = appearance
+//            navigationItem.scrollEdgeAppearance = appearance
+//        }
 		
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButton))
+        if #available(iOS 13.0, *) {
+            self.searchBar.searchTextField.backgroundColor = UIColor.systemBackground
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
 		locationManager.delegate = self
 		mapView.delegate = self
 		searchBar.delegate = self
@@ -208,7 +216,13 @@ open class LocationPickerViewController: UIViewController {
 		}
 	}
 	
-	func setInitialLocation() {
+    @objc func cancelButton() {
+        
+        self.dismiss(animated: true)
+        
+    }
+    
+    func setInitialLocation() {
 		if let location = location {
 			// present initial location if any
 			self.location = location
